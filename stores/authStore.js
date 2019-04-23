@@ -10,7 +10,7 @@ const instance = axios.create({
 class Store {
 	user = null;
 
-	setAuthToken = async (token) => {
+	setUser = async (token) => {
 		if (token) {
 			// Apply to every request
 			axios.defaults.headers.common.Authorization = `JWT ${token}`;
@@ -31,7 +31,7 @@ class Store {
 			const currentDate = Date.now() / 1000;
 			const user = jwt_decode(token);
 			if (user.exp >= currentDate) {
-				this.setAuthToken(token);
+				this.setUser(token);
 			} else {
 				this.setUser();
 			}
@@ -39,7 +39,7 @@ class Store {
 	};
 
 	logoutUser = (navigation) => {
-		this.setAuthToken();
+		this.setUser();
 		navigation.replace('Login');
 
 		console.log('bye bye ');
@@ -47,11 +47,11 @@ class Store {
 
 	loginUser = async (userData, navigation) => {
 		try {
-			const res = await instance.post('api/login/', userData);
+			const res = await instance.post('login/', userData);
 			const user = res.data;
-			this.setAuthToken(user.token);
+			this.setUser(user.token);
 			console.log('login successful');
-			navigation.replace('Profile');
+			// navigation.replace('Profile');
 		} catch (error) {
 			console.log('something went wrong logging in', error.data);
 		}
@@ -60,7 +60,7 @@ class Store {
 	registerUser = async (userData, navigation) => {
 		try {
 			//console.log('registration user data', userData);
-			await instance.post('api/register/', userData);
+			await instance.post('register/', userData);
 			this.loginUser(userData, navigation);
 		} catch (error) {
 			console.log('something went wrong with registering', error.Date);

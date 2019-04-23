@@ -5,6 +5,7 @@ import { SafeAreaView, ScrollView, View, Image } from 'react-native';
 
 //navigators
 import homeStack from '../Navigation/HomeStack';
+import loginScreen from '../components/Login';
 
 // stores
 import authStore from '../stores/authStore';
@@ -22,7 +23,8 @@ const customDrawerComponent = (props) => (
 
 const Drawer = createDrawerNavigator(
 	{
-		Home : { screen: homeStack }
+		Home  : { screen: homeStack },
+		login : { screen: loginScreen }
 	},
 	{
 		contentComponent : customDrawerComponent,

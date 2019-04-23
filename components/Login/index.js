@@ -21,7 +21,7 @@ class Login extends Component {
 	};
 
 	componentDidMount() {
-		if (authStore.user) this.props.navigation.replace('Profile');
+		// if (authStore.user) this.props.navigation.navigate('Profile');
 	}
 
 	render() {

@@ -6,23 +6,25 @@ import { Icon } from 'native-base';
 import homeScreen from '../components/Home';
 import loginScreen from '../components/Login';
 import registerScreen from '../components/Registration';
+import TableDetail from '../components/Home/TableDetail';
 
 const HomeStack = createStackNavigator(
 	{
 		Home     : homeScreen,
+		Detail   : TableDetail,
 		Login    : loginScreen,
 		Register : registerScreen
 	},
 	{
 		defaultNavigationOptions : ({ navigation }) => ({
 			title            : 'Home',
-			headerTintColor  : '#FF7E5F',
+			headerTintColor  : '#000000',
 			headerTitleStyle : { fontWeight: 'bold' },
-			headerStyle      : { backgroundColor: '#351C4D' },
+			headerStyle      : { backgroundColor: 'ffffff' },
 			headerLeft       : (
 				<Icon
 					name="menu"
-					style={{ color: '#FF7E5F' }}
+					style={{ color: '#000000' }}
 					type="MaterialCommunityIcons"
 					onPress={() => navigation.openDrawer()}
 				/>
