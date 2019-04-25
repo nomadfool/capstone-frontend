@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Container, Spinner, Content, Text } from 'native-base';
+import { observer } from 'mobx-react';
 
 // Stores
 import tableStore from '../../stores/tableStore';
 
 // Components
 import List from './List';
-import { observer } from 'mobx-react';
+import FoldList from './FoldView/FoldList';
 
 class Home extends Component {
 	render() {
@@ -25,8 +26,10 @@ class Home extends Component {
 				</Container>
 			);
 		}
-		return <List navigation={this.props.navigation} />;
+		return <FoldList />;
 	}
 }
 
 export default observer(Home);
+
+/* <List navigation={this.props.navigation} /> */

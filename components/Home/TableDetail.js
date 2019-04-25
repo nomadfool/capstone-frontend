@@ -27,6 +27,7 @@ class TableDetail extends Component {
 						<Text>Date: {table.game_date}</Text>
 						<Text>Time: {table.start_time}</Text>
 						<Text>Open Slots: {table.player_number - table.activePlayers}</Text>
+						<Text>Registered players: </Text>
 					</Body>
 				</CardItem>
 			</Card>
