@@ -1,78 +1,102 @@
-import { decorate, observable, action, computed } from 'mobx';
-import axios from 'axios';
-import { AsyncStorage } from 'react-native';
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
+import { decorate, observable, computed } from "mobx";
+import { AsyncStorage } from "react-native";
+import axios from "axios";
+import instance from "../IpConnect";
 
-const instance = axios.create({
-	baseURL : 'http://127.0.0.1:8000/'
-});
+class AuthStore {
+  user = null;
+  profile = null;
+  loading = true;
 
-class Store {
-	user = null;
+  signupUser = async (userData, history) => {
+    try {
+      const res = await instance.post("register/", userData);
+      const user = res.data;
+      const loginData = {
+        username: userData.username,
+        password: userData.password
+      };
+      this.loginUser(loginData, history);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-	setUser = async (token) => {
-		if (token) {
-			// Apply to every request
-			axios.defaults.headers.common.Authorization = `JWT ${token}`;
-			const decodedUser = jwt_decode(token);
-			this.user = decodedUser;
-			await AsyncStorage.setItem('myToken', token);
-		} else {
-			delete axios.defaults.headers.common.Authorization;
-			await AsyncStorage.removeItem('myToken');
-			this.user = null;
-		}
-	};
+  updateProfile = async (userData, history) => {
+    try {
+      const res = await instance.put("profile/update/", userData);
+      this.profile = res.data;
+      this.loading = false;
+      history.replace("Login");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-	checkForToken = async () => {
-		const token = await AsyncStorage.getItem('myToken');
+  getProfile = async () => {
+    try {
+      const res = await instance.get("profile/update/");
+      this.profile = res.data;
+      this.loading = false;
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-		if (token) {
-			const currentDate = Date.now() / 1000;
-			const user = jwt_decode(token);
-			if (user.exp >= currentDate) {
-				this.setUser(token);
-			} else {
-				this.setUser();
-			}
-		}
-	};
+  loginUser = async (userData, history) => {
+    try {
+      const res = await instance.post("login/", userData);
+      const user = res.data;
+      this.setUser(user.token);
+      history.replace("Login");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-	logoutUser = (navigation) => {
-		this.setUser();
-		navigation.replace('Login');
+  checkForToken = async () => {
+    const token = await AsyncStorage.getItem("myToken");
+    if (token) {
+      const currentTime = Date.now() / 1000;
+      const user = jwt_decode(token);
+      if (user.exp >= currentTime) {
+        this.setUser(token);
+      } else {
+        this.logout();
+      }
+    }
+  };
 
-		console.log('bye bye ');
-	};
+  logout = history => {
+    this.setUser();
+    history.replace("Login");
+  };
 
-	loginUser = async (userData, navigation) => {
-		try {
-			const res = await instance.post('login/', userData);
-			const user = res.data;
-			this.setUser(user.token);
-			console.log('login successful');
-			// navigation.replace('Profile');
-		} catch (error) {
-			console.log('something went wrong logging in', error.data);
-		}
-	};
-
-	registerUser = async (userData, navigation) => {
-		try {
-			//console.log('registration user data', userData);
-			await instance.post('register/', userData);
-			this.loginUser(userData, navigation);
-		} catch (error) {
-			console.log('something went wrong with registering', error.Date);
-		}
-	};
+  setUser = async token => {
+    try {
+      if (token) {
+        axios.defaults.headers.common.Authorization = `JWT ${token}`;
+        const decodedUser = jwt_decode(token);
+        this.user = decodedUser;
+        await AsyncStorage.setItem("myToken", token);
+      } else {
+        await AsyncStorage.removeItem("myToken");
+        delete axios.defaults.headers.common.Authorization;
+        this.user = null;
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 }
 
-decorate(Store, {
-	user : observable
+decorate(AuthStore, {
+  user: observable,
+  profile: observable
 });
 
-const authStore = new Store();
+const authStore = new AuthStore();
 authStore.checkForToken();
 
 export default authStore;
