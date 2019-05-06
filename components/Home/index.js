@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Spinner, Content, Text } from 'native-base';
+import { Container, Spinner, Content, Text, View, Fab, Icon, Button } from 'native-base';
 import { observer } from 'mobx-react';
 
 // Stores
@@ -10,6 +10,10 @@ import List from './List';
 import FoldList from './FoldView/FoldList';
 
 class Home extends Component {
+	createTable = () => {
+		this.props.navigation.navigate('Create');
+	};
+
 	render() {
 		if (!tableStore.tables) {
 			return (
@@ -26,7 +30,21 @@ class Home extends Component {
 				</Container>
 			);
 		}
-		return <FoldList />;
+		return (
+			<View style={{ flex: 1 }}>
+				<FoldList />
+				<Fab
+					Button
+					direction="right"
+					position="bottomRight"
+					style={{ backgroundColor: '#351C4D' }}
+					onPress={this.createTable}
+				>
+					<Icon name="plus" type="Feather" />
+					<Button style={{ backgroundColor: '#o2c39a' }} />
+				</Fab>
+			</View>
+		);
 	}
 }
 
