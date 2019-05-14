@@ -1,19 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppContainer from './Navigation/Drawer';
-import Login from './components/Login';
-export default class App extends React.Component {
+import { Root } from 'native-base';
+import Dashboard from './components/Profile/Dashboard';
+import CreateTable from './components/Home/createTable';
+export default class App extends Component {
 	render() {
-		return <AppContainer />;
+		return (
+			<Root>
+				<AppContainer />
+			</Root>
+		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container : {
-		flex            : 1,
-		backgroundColor : '#fff',
-		alignItems      : 'center',
-		justifyContent  : 'center'
-	}
-
-});

@@ -70,7 +70,7 @@ export default class Row extends Component {
 	}
 
 	renderBackface() {
-		return <ProfileCard onPress={this.flip} />;
+		return <ProfileCard onPress={this.flip} table={this.props.table} />;
 	}
 
 	render() {
@@ -88,6 +88,7 @@ export default class Row extends Component {
 			>
 				<View
 					style={{
+						flex   : 1,
 						height : ROW_HEIGHT,
 						margin : 10
 					}}
@@ -99,7 +100,7 @@ export default class Row extends Component {
 						renderBackface={this.renderBackface}
 						renderFrontface={this.renderFrontface}
 					>
-						<PhotoCard onPress={this.flip} />
+						<PhotoCard onPress={this.flip} table={this.props.table} />
 					</FoldView>
 				</View>
 

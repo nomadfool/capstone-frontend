@@ -1,30 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableHighlight } from 'react-native';
 
 import { ThinGrayLine, ThickDarkGrayLine } from './Lines';
+import { Text, Button, Toast } from 'native-base';
 
-export default ({ onPress }) => (
-	<View
-		style={{
-			flex              : 1,
-			paddingTop        : 10,
-			paddingHorizontal : 16,
-			flexDirection     : 'row',
+import authStore from '../../../../stores/authStore';
+import tableStore from '../../../../stores/tableStore';
+export default class AdditionalInfoCard extends Component {
+	handleJoin = () => {
+		table = this.props.table;
 
-			backgroundColor   : '#FFFFFF',
-			borderTopWidth    : StyleSheet.hairlineWidth,
-			borderTopColor    : '#BDC2C9'
-		}}
-	>
-		<View style={{ flex: 1 }}>
-			<ThickDarkGrayLine width={100} />
-			<ThinGrayLine width={80} onPress={onPress} />
-		</View>
+		tableStore.joinTable(table.id);
+		Toast.show({
+			text     : 'Joined!',
 
-		<View style={{ flex: 1 }}>
-			<ThickDarkGrayLine width={60} />
-			<ThinGrayLine width={120} />
-		</View>
-	</View>
-);
+			duration : 1500
+		});
+	};
+	render() {
+		const onPress = this.props.onPress;
+		const table = this.props.table;
+		return (
+			<View
+				style={{
+					position          : 'absolute',
+					paddingTop        : 10,
+					paddingHorizontal : 16,
+
+					backgroundColor   : '#FFFFFF',
+					borderTopWidth    : StyleSheet.hairlineWidth,
+					borderTopColor    : '#BDC2C9',
+					alignItems        : 'center',
+					justifyContent    : 'center',
+					width             : '100%'
+				}}
+			>
+				<View style={{ position: 'absolute' }}>
+					<Button onPress={() => this.handleJoin()} style={{ backgroundColor: '#7B8DA0' }}>
+						<Text>Join Table</Text>
+					</Button>
+				</View>
+			</View>
+		);
+	}
+}

@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
 
 import { ThinGrayLine, ThickWhiteLine } from './Lines';
+import { Text } from 'native-base';
 
 const styles = StyleSheet.create({
 	container : {
 		flex            : 1,
-		backgroundColor : '#33373B',
+		backgroundColor : '#FFF',
 		padding         : 10,
 		flexDirection   : 'column'
 	},
@@ -18,35 +19,38 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ({ onPress }) => (
-	<View style={styles.container}>
-		<View
-			style={{
-				flexDirection   : 'row',
-				justifyContent  : 'space-between',
-				backgroundColor : '#5A4A9C',
-				height          : 40,
-				padding         : 10
-			}}
-		>
-			<ThickWhiteLine width={40} onPress={onPress} />
-			<ThickWhiteLine width={60} />
-			<ThickWhiteLine width={40} />
-		</View>
+export default class PhotoCard extends Component {
+	render() {
+		const onPress = this.props.onPress;
+		const table = this.props.table;
+		return (
+			<View style={styles.container}>
+				<View
+					style={{
+						flexDirection   : 'row',
+						justifyContent  : 'space-between',
+						backgroundColor : '#ACB8C3',
+						height          : 40,
+						padding         : 10
+					}}
+				>
+					<Text>{table.name}</Text>
+				</View>
 
-		<View style={styles.card}>
-			<View
-				style={{
-					flexDirection  : 'row',
-					justifyContent : 'space-between',
-					padding        : 10,
-					paddingBottom  : 0
-				}}
-			>
-				<ThinGrayLine width={40} />
-				<ThinGrayLine width={80} />
-				<ThinGrayLine width={50} onPress={onPress} />
+				<View style={styles.card}>
+					<ScrollView
+						contentContainerStyle={{
+							flexGrow       : 1,
+							flexDirection  : 'row',
+							justifyContent : 'space-between',
+							padding        : 10,
+							paddingBottom  : 5
+						}}
+					>
+						<Text>{table.description}</Text>
+					</ScrollView>
+				</View>
 			</View>
-		</View>
-	</View>
-);
+		);
+	}
+}

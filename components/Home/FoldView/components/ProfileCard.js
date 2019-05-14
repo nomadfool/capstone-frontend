@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet, Image } from 'react-native';
 
 import FoldView from 'react-native-foldview';
 
@@ -31,7 +31,7 @@ export default class Row extends Component {
 		return (
 			<View style={{ flex: 1 }}>
 				<FoldView renderFrontface={this.renderBlankFace} renderBackface={this.renderInnerBackFace}>
-					<AdditionalInfoCard onPress={onPress} />
+					<AdditionalInfoCard onPress={onPress} table={this.props.table} />
 				</FoldView>
 			</View>
 		);
@@ -39,42 +39,12 @@ export default class Row extends Component {
 
 	renderInnerBackFace() {
 		const onPress = this.props.onPress;
-		return (
-			<View
-				style={{
-					backgroundColor         : '#fff',
-					flex                    : 1,
-					borderTopWidth          : StyleSheet.hairlineWidth,
-					borderTopColor          : '#BDC2C9',
-					borderBottomLeftRadius  : 2,
-					borderBottomRightRadius : 2
-				}}
-			>
-				<View
-					style={{
-						backgroundColor : '#FFBD18',
-						flex            : 1,
-						margin          : 14,
-						borderRadius    : 2
-					}}
-				>
-					<TouchableHighlight
-						style={{
-							flex           : 1,
-							justifyContent : 'center',
-							alignItems     : 'center'
-						}}
-						onPress={onPress}
-					>
-						<Text>PRESS ME</Text>
-					</TouchableHighlight>
-				</View>
-			</View>
-		);
+		return <View />;
 	}
 
 	render() {
 		const onPress = this.props.onPress;
+		const table = this.props.table;
 
 		return (
 			<View
@@ -92,7 +62,7 @@ export default class Row extends Component {
 							padding       : 16
 						}}
 					>
-						<ThinGrayLine width={120} />
+						<Text>{table.game.name}</Text>
 
 						<View
 							style={{
@@ -100,16 +70,14 @@ export default class Row extends Component {
 								flexDirection : 'row'
 							}}
 						>
-							<TouchableHighlight onPress={onPress}>
-								<View
-									style={{
-										width           : 40,
-										height          : 40,
-										marginRight     : 10,
-										backgroundColor : '#BDC2C9'
-									}}
-								/>
-							</TouchableHighlight>
+							<View
+								style={{
+									flex          : 1,
+									flexDirection : 'column'
+								}}
+							>
+								<Image style={{ width: 50, height: 50 }} source={{ uri: `${table.game.image}` }} />
+							</View>
 
 							<View
 								style={{
@@ -117,15 +85,15 @@ export default class Row extends Component {
 									flexDirection : 'column'
 								}}
 							>
-								<ThickDarkGrayLine width={200} />
-								<ThinGrayLine width={120} />
+								<Text>{table.game_date}</Text>
+								<Text>{table.start_time}</Text>
 							</View>
 						</View>
 					</View>
 
 					<View style={{ flex: 1 }}>
 						<FoldView renderFrontface={this.renderBlankFace} renderBackface={this.renderBackface}>
-							<ProfileDetailCard onPress={onPress} />
+							<ProfileDetailCard onPress={onPress} table={this.props.table} />
 						</FoldView>
 					</View>
 				</View>
